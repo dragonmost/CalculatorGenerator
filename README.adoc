@@ -1,0 +1,23 @@
+= CalculatorGenerator
+
+A very powerful calculator that supports addition and subtraction of 2 bytes (0 - 255) together
+
+== Usage
+
+.Addition 
+----
+CalculatorGenerator.exe -add 1 1
+----
+
+.Subtraction 
+----
+CalculatorGenerator.exe -subtract 2 1
+----
+
+== All commands
+
+----
+--help -h                 Show help
+--add -a <v1, v2>         Addition
+--subtract -s <v1, v2>    subtract
+----
