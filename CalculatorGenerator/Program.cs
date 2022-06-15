@@ -50,6 +50,10 @@ namespace Calculator
         {
             try
             {
+                Console.WriteLine(""Warming up the vacuum tubes..."");
+                WarmingUp();
+                Console.WriteLine(""Ready to go!"");
+
                 while (true)
                 {
                     if (args == null || args.Length == 0)
@@ -73,7 +77,7 @@ namespace Calculator
                         case ""--subtract"":
                         case ""-s"":
                             Console.Write(args[1].ToString() + "" - "" + args[2].ToString() + "" = "");
-                            result = subtract(int.Parse(args[1]), int.Parse(args[2]));
+                            result = Subtraction(int.Parse(args[1]), int.Parse(args[2]));
                             Console.WriteLine(result == int.MinValue ? ""error"" : result.ToString());
                             break;
                         case ""--quit"":
@@ -93,12 +97,18 @@ namespace Calculator
             }
         }
         
+        private static void WarmingUp()
+        {
+            Addition(0, 0);
+            Subtraction(0, 0);
+        }
+
         private static int Addition(int v1, int v2)
         {
             {0}
         }
 
-        private static int subtract(int v1, int v2)
+        private static int Subtraction(int v1, int v2)
         {
             {1}
         }
