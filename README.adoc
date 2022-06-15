@@ -19,5 +19,5 @@ CalculatorGenerator.exe -subtract 2 1
 ----
 --help -h                 Show help
 --add -a <v1, v2>         Addition
---subtract -s <v1, v2>    subtract
+--subtract -s <v1, v2>    subtraction
 ----

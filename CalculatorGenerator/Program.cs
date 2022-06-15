@@ -23,9 +23,17 @@ namespace CalculatorGenerator
             compilerParameters.CompilerOptions = "/optimize";
             CompilerResults result = provider.CompileAssemblyFromSource(compilerParameters, new[] { Source });
 
+            if (result.Errors.HasErrors)
+            {
+                Console.WriteLine("Errors");
+                Console.ReadKey();
+                return;
+            }
+
             Type calculatorType = result.CompiledAssembly.GetModules()[0].GetType("Calculator.Program");
             var calculator = Activator.CreateInstance(calculatorType);
             var mainMethod = calculatorType.GetMethod("Main");
+
             mainMethod.Invoke(calculator, new[] { args });
         }
 
@@ -42,25 +50,38 @@ namespace Calculator
         {
             try
             {
-                int result;
-                switch(args[0].ToLower())
+                while (true)
                 {
-                    case ""--help"":
-                    case ""-h"":
-                        GetHelp();
-                        break;
-                    case ""--add"":
-                    case ""-a"":
-                        Console.Write(args[1].ToString() + "" + "" + args[2].ToString() + "" = "");
-                        result = Addition(int.Parse(args[1]), int.Parse(args[2]));
-                        Console.WriteLine(result == int.MinValue ? ""error"" : result.ToString());
-                        break;
-                    case ""--subtract"":
-                    case ""-s"":
-                        Console.Write(args[1].ToString() + "" - "" + args[2].ToString() + "" = "");
-                        result = subtract(int.Parse(args[1]), int.Parse(args[2]));
-                        Console.WriteLine(result == int.MinValue ? ""error"" : result.ToString());
-                        break;
+                    if (args == null || args.Length == 0)
+                    {
+                        args = Console.ReadLine().Split(' ');
+                    }
+
+                    int result;
+                    switch(args[0].ToLower())
+                    {
+                        case ""--help"":
+                        case ""-h"":
+                            GetHelp();
+                            break;
+                        case ""--add"":
+                        case ""-a"":
+                            Console.Write(args[1].ToString() + "" + "" + args[2].ToString() + "" = "");
+                            result = Addition(int.Parse(args[1]), int.Parse(args[2]));
+                            Console.WriteLine(result == int.MinValue ? ""error"" : result.ToString());
+                            break;
+                        case ""--subtract"":
+                        case ""-s"":
+                            Console.Write(args[1].ToString() + "" - "" + args[2].ToString() + "" = "");
+                            result = subtract(int.Parse(args[1]), int.Parse(args[2]));
+                            Console.WriteLine(result == int.MinValue ? ""error"" : result.ToString());
+                            break;
+                        case ""--quit"":
+                        case ""-q"":
+                            return;
+                    }
+
+                    args = null;
                 }
             }
             catch (Exception ex)
@@ -69,10 +90,6 @@ namespace Calculator
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message);
                 Console.ForegroundColor = defaultColor;
-            }
-            finally
-            {
-                Console.ReadKey();
             }
         }
         
@@ -90,7 +107,7 @@ namespace Calculator
         {
             Console.Write(@""--help -h                 Show help
 --add -a <v1, v2>         Addition
---subtract -s <v1, v2>    subtract
+--subtract -s <v1, v2>    subtraction
 "");
         }
     }
@@ -107,7 +124,7 @@ namespace Calculator
                     yield return $"if (v1 == {v1} && v2 == {v2}) return {v1 + v2};";
                 }
             }
-            
+
             yield return $"else return int.MinValue;";
         }
 
@@ -115,7 +132,7 @@ namespace Calculator
         {
             for (int v1 = 0; v1 <= byte.MaxValue; v1++)
             {
-                for (int v2 = 0; v2 <= byte.MaxValue; v2++)
+                for (int v2 = v1; v2 <= byte.MaxValue; v2++)
                 {
                     yield return $"if (v1 == {v1} && v2 == {v2}) return {v1 - v2};";
                 }
